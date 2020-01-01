@@ -98,8 +98,8 @@ public class SSHRunner extends AsyncTask<String, String, String> {
             case "cpuutils":
                 command = "python /home/pi/Desktop/lamp.py";
                 break;
-            case "testConnection":
-                command = "";
+            case "benchmark":
+                command = "sysbench --test=cpu --cpu-max-prime=20000 --num-threads=4 run";
                 break;
         }
 
@@ -186,8 +186,6 @@ public class SSHRunner extends AsyncTask<String, String, String> {
     protected void onPostExecute(String output){
         super.onPostExecute(output);
 
-        Log.d("Testttttt",ConnectSessionStatusString);
-        Log.d("Testttttt",ConnectChannelStatusString);
         if(ConnectSessionStatus){
 
             if(ConnectChannelStatus){

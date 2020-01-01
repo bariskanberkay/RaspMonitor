@@ -36,8 +36,9 @@ public class MainActivity extends AppCompatActivity implements AsyncTaskListener
     private String deviceUsername;
     private String devicePassword;
     private String deviceName;
+    private String commandType;
 
-    private TextView Device_Name, Cpu_Temp, Cpu_Live, Cpu_Min, Cpu_Max;
+    private TextView Device_Name, Cpu_Temp, Cpu_Live, Cpu_Min, Cpu_Max,Ram_Perc,Ram_Used,Ram_Total;
 
     private SSHRunner runner;
 
@@ -112,6 +113,10 @@ public class MainActivity extends AppCompatActivity implements AsyncTaskListener
         Cpu_Min = findViewById(R.id.textView_Cpu_Min);
         Cpu_Max = findViewById(R.id.textView_Cpu_Max);
 
+        Ram_Perc = findViewById(R.id.textView_Ram_Live_Perc);
+        Ram_Used = findViewById(R.id.textView_Ram_Used);
+        Ram_Total = findViewById(R.id.textView_Ram_Total);
+
 
 
         device = getIntent().getParcelableExtra(MainActivity.class.getSimpleName());
@@ -125,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements AsyncTaskListener
             deviceUsername = device.getDevice_Username();
             devicePassword = device.getDevice_Password();
             deviceName = device.getDevice_Name();
-
+            commandType = "cpuutils";
 
             StartSSH();
 
@@ -152,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements AsyncTaskListener
         if (item.getItemId() == android.R.id.home) {
             finish();
         } else {
-            Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT).show();
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -170,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements AsyncTaskListener
 
         runner = new SSHRunner(this);
         runner.delegate = this;
-        String[] args = {deviceIp,devicePort,deviceTimeout,deviceUsername,devicePassword,"cpuutils","true",Boolean.toString(isLoop)};
+        String[] args = {deviceIp,devicePort,deviceTimeout,deviceUsername,devicePassword,commandType,"true",Boolean.toString(isLoop)};
         runner.execute(args);
 
     }
@@ -178,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements AsyncTaskListener
     @Override
     public void processFinish(String output){
 
-       // testText.setText(output);
+
         String[] parts = output.split("##########");
         if (isLoop){
             StartSSH();
@@ -188,13 +193,11 @@ public class MainActivity extends AppCompatActivity implements AsyncTaskListener
         Cpu_Max.setText(parts[2]);
         Cpu_Live.setText(parts[3]);
 
-      /*  if(output.equals("Not Connected")){
-           // testText.setText(output);
-        }else if(output.equals("Connected...")){
-            //testText.setText(output);
-        } else{
-            StartSSH();
-        }*/
+        Ram_Perc.setText(parts[7]);
+        Ram_Used.setText(parts[4]);
+        Ram_Total.setText(parts[5]);
+
+
 
 
 

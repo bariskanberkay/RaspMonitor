@@ -109,7 +109,6 @@ public class DevicesActivity extends AppCompatActivity implements DL_RecyclerIte
     @Override
     public void onItemClick(int position, View view) {
         MainActivity.start(DevicesActivity.this, deviceListAdapter.getItem(position));
-        Toast.makeText(this, "Clicked!", Toast.LENGTH_SHORT).show();
     }
 
 
